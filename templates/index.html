@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hand Tracking</title>
+
+    <style>
+        #video{
+            align-items: center;
+            border-radius: 2cm solid blue;
+        }
+    </style>
+
+
+</head>
+<body>
+    <img id="video" src="{{ url_for('video_feed') }}">
+    <div id="fps"></div>
+    <!-- <div id="coordinates"></div> -->
+
+    <script>
+        const video = document.getElementById('video');
+        const fpsDiv = document.getElementById('fps');
+        const coordinatesDiv = document.getElementById('coordinates');
+
+        video.addEventListener('load', () => {
+            setInterval(() => {
+                fetch('/fps')
+                    .then(response => response.text())
+                    .then(fps => fpsDiv.innerText = `FPS: ${fps}`);
+
+                fetch('/coordinates')
+                    .then(response => response.text())
+                    .then(coordinates => coordinatesDiv.innerText = `Coordinates: ${coordinates}`);
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
